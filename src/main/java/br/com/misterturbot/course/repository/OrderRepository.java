@@ -6,5 +6,4 @@ import br.com.misterturbot.course.entity.Order;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
 	
-
 }

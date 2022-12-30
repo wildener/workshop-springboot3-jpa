@@ -6,5 +6,4 @@ import br.com.misterturbot.course.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 	
-
 }
