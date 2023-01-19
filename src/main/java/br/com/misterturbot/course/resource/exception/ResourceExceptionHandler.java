@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import br.com.misterturbot.course.service.exception.DatabaseException;
 import br.com.misterturbot.course.service.exception.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -20,4 +21,12 @@ public class ResourceExceptionHandler {
 		StandardError stdError = new StandardError(Instant.now(), status.value(), error, rnfe.getMessage(), request.getRequestURI());
 		return ResponseEntity.status(status).body(stdError);
 	}
+	
+	@ExceptionHandler(DatabaseException.class)
+	public ResponseEntity<StandardError> resourceNotFound(DatabaseException dbexc, HttpServletRequest request) {
+		String error = "Database error";
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		StandardError stdError = new StandardError(Instant.now(), status.value(), error, dbexc.getMessage(), request.getRequestURI());
+		return ResponseEntity.status(status).body(stdError);
+	}	
 }
