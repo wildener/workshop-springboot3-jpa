@@ -12,6 +12,7 @@ import br.com.misterturbot.course.entity.User;
 import br.com.misterturbot.course.repository.UserRepository;
 import br.com.misterturbot.course.service.exception.DatabaseException;
 import br.com.misterturbot.course.service.exception.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class UserService {
@@ -43,9 +44,13 @@ public class UserService {
 	}
 	
 	public User update(Long id, User obj) {
-		User entity = userRepository.getReferenceById(id);
-		updateData(entity, obj);
-		return userRepository.save(entity);
+		try {
+			User entity = userRepository.getReferenceById(id);
+			updateData(entity, obj);
+			return userRepository.save(entity);
+		} catch (EntityNotFoundException exc) {
+			 throw new ResourceNotFoundException(id);
+		}
 	}
 
 	private void updateData(User entity, User obj) {
